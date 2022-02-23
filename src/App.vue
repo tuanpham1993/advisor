@@ -26,10 +26,6 @@ export default {
 
   components: {
     Crypto,
-    // Orders,
-    // Positions,
-    // Signals,
-    // Cron,
   },
   data: () => ({
     tab: 0,
