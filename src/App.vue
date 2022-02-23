@@ -1,28 +1,83 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app class="app">
+    <v-app-bar color="rgb(28, 23, 60)" app>
+      <v-toolbar-title>
+        <v-btn color="orange" icon>
+          <v-icon large>mdi-bitcoin</v-icon>
+        </v-btn>
+
+        <span class="app__name">Cryptocurrency</span>
+      </v-toolbar-title>
+
+      <v-spacer></v-spacer>
+    </v-app-bar>
+
+    <v-main class="app-container">
+      <crypto />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Crypto from './views/Crypto';
 
 export default {
   name: 'App',
+
   components: {
-    HelloWorld
-  }
-}
+    Crypto,
+    // Orders,
+    // Positions,
+    // Signals,
+    // Cron,
+  },
+  data: () => ({
+    tab: 0,
+    focused: false,
+    authorizied: false,
+    selectedSizes: [],
+    sizeOptions: [{ id: '1', name: 'XS' }],
+  }),
+  methods: {
+    nameChange(name) {
+      if (name === 'Legend investor') {
+        this.authorizied = true;
+      }
+    },
+  },
+  mounted() {
+    window.onfocus = () => {
+      this.focused = true;
+    };
+    window.onblur = () => {
+      this.focused = false;
+    };
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+.app {
+  &__name {
+    color: white;
+    font-weight: 600;
+  }
+}
+
+.app-container {
+  background-color: rgb(28, 23, 60);
+  margin-top: 10px;
+}
+
+.page-container {
+  padding: 0 16px;
+}
+
+.page-header {
+  color: white;
+  padding: 10px 0;
+  font-size: 30px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 </style>

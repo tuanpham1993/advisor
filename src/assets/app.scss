@@ -1,0 +1,16 @@
+.enum {
+  border: solid 1px;
+  padding: 2px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #7f8c8d;
+
+  &--green {
+    background-color: #2ecc71;
+  }
+
+  &--red {
+    background-color: #e74c3c;
+  }
+}
