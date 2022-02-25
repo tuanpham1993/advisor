@@ -1,13 +1,13 @@
 <template>
   <div class="exchange">
-    <div class="exchange-summary">
+    <!-- <div class="exchange-summary">
       <div>Total: {{ formatCurrency(totalBudget) }}</div>
       <div>
         USD: {{ formatCurrency(usd) }} ({{
           round((usd / totalBudget) * 100, 2)
         }}%)
       </div>
-    </div>
+    </div> -->
 
     <v-row>
       <v-col
@@ -93,7 +93,6 @@ export default {
       };
     },
     async updateAssets(assets) {
-      console.log(assets);
       const allAssets = map(assets, (asset) => {
         return {
           ...asset,
@@ -132,11 +131,11 @@ export default {
 
 <style lang="scss" scoped>
 .exchange {
+  margin-top: 20px;
   background-color: rgb(28, 23, 60);
 }
 
 .exchange-summary {
-  margin-top: 20px;
   margin-bottom: 15px;
   background: #2d2755;
   color: white;

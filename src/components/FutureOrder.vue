@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="future-table">
     <v-row class="table-header">
       <v-col>Symbol</v-col>
       <v-col>Type</v-col>
@@ -74,5 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.future-table {
+  background-color: #2d2755;
+}
 </style>

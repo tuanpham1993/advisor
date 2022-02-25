@@ -57,9 +57,6 @@ export default {
   watch: {
     asset() {
       this.item = this.asset;
-      if (this.item.name === 'KUMA') {
-          console.log(this.item)
-      }
     },
   },
   computed: {

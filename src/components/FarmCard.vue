@@ -35,7 +35,6 @@ export default {
   watch: {
     asset() {
       this.item = this.asset;
-      console.log(this.item);
     },
   },
 };

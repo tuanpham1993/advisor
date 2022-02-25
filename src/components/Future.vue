@@ -1,17 +1,15 @@
 <template>
-  <div>
+  <div style="background-color: rgb(28, 23, 60)">
     <div class="future-info">
       <v-row>
         <v-col>
           <b>Config</b>
           <div>Position Budget: {{ formatCurrency(config.baseBudget) }}</div>
-          <!-- <div>Position Qty: {{ config.numPos }}</div> -->
           <div>Long Qty: {{ config.longNumPos }}</div>
           <div>Short Qty: {{ config.shortNumPos }}</div>
         </v-col>
         <v-col>
           <b>Reality</b>
-          <!-- <div>Position Qty: {{ positions.length }}</div> -->
           <div>USD: {{ formatCurrency(config.usd) }}</div>
           <div>
             Long Qty:
@@ -25,7 +23,6 @@
               filter(positions, (position) => position.side === 'SHORT').length
             }}
           </div>
-          <!-- <div>Risky Position Qty: {{ unSafePoses }}</div> -->
           <div>Risky Long Vol: {{ formatCurrency(unSafeLongVol) }}</div>
           <div>Risky Short Vol: {{ formatCurrency(unSafeShortVol) }}</div>
         </v-col>
@@ -47,10 +44,12 @@
       </v-row>
     </div>
 
-    <v-tabs v-model="tab" background-color="#ecf0f1" color="#2ecc71">
-      <v-tab> Positions </v-tab>
+    <v-tabs v-model="tab" background-color="#2d2755" color="white">
+      <v-tab><span class="tab__title"> Positions </span> </v-tab>
 
-      <v-tab> Orders </v-tab>
+      <v-tab> <span class="tab__title">Orders</span> </v-tab>
+
+      <v-tab> <span class="tab__title">Changes</span> </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
@@ -117,6 +116,10 @@
 
       <v-tab-item>
         <future-order :orders="orders" />
+      </v-tab-item>
+
+      <v-tab-item>
+        <price-changes :priceChanges="priceChanges" />
       </v-tab-item>
     </v-tabs-items>
 
@@ -211,14 +214,16 @@ import {
 import http from '../services/http';
 import FutureOrder from './FutureOrder.vue';
 import formatterMixin from '../mixins/formatter';
+import PriceChanges from './PriceChanges.vue';
 
 export default {
-  components: { FutureOrder },
+  components: { FutureOrder, PriceChanges },
   mixins: [formatterMixin],
   data() {
     return {
       positions: [],
       config: {},
+      priceChanges: [],
       unSafeVol: 0,
       unSafePoses: 0,
       unSafeLongPoses: 0,
@@ -242,6 +247,7 @@ export default {
     this.connectGetPositionsSocket();
     this.connectGetOrdersSocket();
     this.connectGetConfigSocket();
+    this.connectGetPriceChangeSocket();
   },
   computed: {
     round() {
@@ -296,6 +302,22 @@ export default {
 
       getConfigSocket.onmessage = (event) => {
         this.updateConfig(JSON.parse(event.data));
+      };
+    },
+
+    connectGetPriceChangeSocket() {
+      const getPriceChangeSocket = new WebSocket(
+        `${process.env.VUE_APP_SOCKET_BASE_URL}/price-changes`
+      );
+      getPriceChangeSocket.onerror = (err) => {
+        this.connectGetPriceChangeSocket();
+      };
+      getPriceChangeSocket.onclose = (err) => {
+        this.connectGetPriceChangeSocket();
+      };
+
+      getPriceChangeSocket.onmessage = (event) => {
+        this.updatePriceChange(JSON.parse(event.data));
       };
     },
 
@@ -462,6 +484,10 @@ export default {
       this.config = config;
     },
 
+    async updatePriceChange(priceChanges) {
+      this.priceChanges = priceChanges;
+    },
+
     viewDetail(position) {
       this.showDetail = true;
       this.selectedPosition = position;
@@ -516,8 +542,8 @@ export default {
 
 <style lang="scss" scoped>
 .future-info {
-  border: solid 1px #bdc3c7;
-  background: #f1f3f4;
+  color: white;
+  background: #2d2755;
   padding: 10px;
   margin: 10px 0;
 }
@@ -530,8 +556,8 @@ export default {
 
 .position {
   width: 200px;
-  border: solid 1px grey;
-  background: #f1f3f4;
+  background: #2d2755;
+  color: white;
   padding: 10px;
   margin: 10px 10px 0 0;
 

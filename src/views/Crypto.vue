@@ -516,29 +516,31 @@ a {
 }
 
 .table-header {
+  color: white;
   font-weight: 500;
-  background-color: #ecf0f1;
-  border-top: solid 1px #bdc3c7;
-  border-left: solid 1px #bdc3c7;
-  border-right: solid 1px #bdc3c7;
+  background-color: #2d2755;
+  border-top: solid 1px #2d2755;
+  border-left: solid 1px #2d2755;
+  border-right: solid 1px #2d2755;
   font-size: 12px;
   padding: 0;
 }
 
 .table-row {
-  background-color: #ecf0f1;
-  border-top: solid 1px #bdc3c7;
-  border-left: solid 1px #bdc3c7;
-  border-right: solid 1px #bdc3c7;
+  color: white;
+  background-color: #2d2755;
+  border-top: solid 1px #2d2755;
+  border-left: solid 1px #2d2755;
+  border-right: solid 1px #2d2755;
   /* font-size: 14px; */
   padding: 0;
 
   &:last-of-type {
-    border-bottom: solid 1px #bdc3c7;
+    border-bottom: solid 1px #2d2755;
   }
 
   &:nth-child(even) {
-    background-color: #dfe6e9;
+    background-color: #2d2755;
   }
 }
 
