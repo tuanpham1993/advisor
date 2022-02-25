@@ -104,11 +104,11 @@ export default {
 
       this.assets = filter(
         allAssets,
-        ({ name }) => !['BNB', 'CAKE', 'MARS', 'BUSD', 'USDT'].includes(name)
+        ({ name }) => !['BNB', 'CAKE', 'BTC', 'BUSD', 'USDT'].includes(name)
       );
 
       this.farmAssets = filter(allAssets, ({ name }) =>
-        ['BNB', 'CAKE', 'MARS'].includes(name)
+        ['BNB', 'CAKE', 'BTC'].includes(name)
       );
 
       this.stableAssets = filter(allAssets, ({ name }) =>
