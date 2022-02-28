@@ -1,13 +1,13 @@
 <template>
   <div class="exchange">
-    <!-- <div class="exchange-summary">
-      <div>Total: {{ formatCurrency(totalBudget) }}</div>
-      <div>
+    <div class="exchange-summary">
+      <div>{{ formatCurrency(totalBudget) }}</div>
+      <!-- <div>
         USD: {{ formatCurrency(usd) }} ({{
           round((usd / totalBudget) * 100, 2)
         }}%)
-      </div>
-    </div> -->
+      </div> -->
+    </div>
 
     <v-row>
       <v-col
