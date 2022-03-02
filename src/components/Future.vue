@@ -51,7 +51,7 @@
 
       <v-tab> <span class="tab__title">Changes</span> </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" class="tab__content">
       <v-tab-item>
         <v-row class="table-header">
           <v-col>Symbol</v-col>
@@ -64,7 +64,7 @@
         </v-row>
         <v-row
           class="table-row"
-          v-for="position of positions"
+          v-for="position of autoPositions"
           :key="position.symbol"
         >
           <v-col
@@ -111,6 +111,52 @@
             "
             >{{ position.elapsedTime }}</v-col
           >
+        </v-row>
+
+        <hr />
+
+        <v-row class="table-header">
+          <v-col>Symbol</v-col>
+          <v-col>Price</v-col>
+          <v-col>Budget</v-col>
+          <v-col>Profit</v-col>
+          <v-col>Last Action</v-col>
+        </v-row>
+
+        <v-row
+          class="table-row"
+          v-for="position of manualPositions"
+          :key="position.symbol"
+        >
+          <v-col
+            ><span v-if="position.side === 'LONG'" class="side buy-side">L</span
+            ><span class="side sell-side" v-else>S</span>
+            &nbsp;
+            <a @click="viewDetail(position)">{{
+              position.symbol.replace('USDT', '')
+            }}</a></v-col
+          >
+          <v-col>{{ position.currentPrice }} / {{ position.avgPrice }}</v-col>
+          <v-col>{{
+            round(+position.position.positionAmt * position.currentPrice, 2)
+          }}</v-col>
+          <v-col
+            :class="
+              position.status === 0
+                ? 'text-orange'
+                : position.status === 2
+                ? 'text-green'
+                : 'text-red'
+            "
+            >{{ round(position.position.unRealizedProfit, 1) }}</v-col
+          >
+
+          <v-col>
+            <span v-if="position.lastOrder">
+              {{ position.lastOrder.side }} at
+              {{ position.lastOrder.avgPrice }}</span
+            >
+          </v-col>
         </v-row>
       </v-tab-item>
 
@@ -222,6 +268,8 @@ export default {
   data() {
     return {
       positions: [],
+      autoPositions: [],
+      manualPositions: [],
       config: {},
       priceChanges: [],
       unSafeVol: 0,
@@ -421,7 +469,8 @@ export default {
       );
 
       this.positions = positions;
-
+      this.autoPositions = filter(positions, ({ manual }) => !manual);
+      this.manualPositions = filter(positions, ({ manual }) => manual);
       const orders = [];
       for (const position of positions) {
         orders.push(...this.concatOrders(position));
@@ -578,5 +627,13 @@ export default {
 
 .sell-side {
   background-color: #e74c3c;
+}
+
+.tab {
+  &__content {
+    margin-top: 10px;
+    color: white;
+    background-color: #2d2755 !important;
+  }
 }
 </style>
