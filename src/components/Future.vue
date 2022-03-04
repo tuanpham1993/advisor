@@ -148,8 +148,15 @@
                 ? 'text-green'
                 : 'text-red'
             "
-            >{{ round(position.position.unRealizedProfit, 1) }}</v-col
           >
+            {{
+              round(
+                (position.currentPrice - position.avgPrice) *
+                  +position.position.positionAmt,
+                1
+              )
+            }}
+          </v-col>
 
           <v-col>
             <span v-if="position.lastOrder">
