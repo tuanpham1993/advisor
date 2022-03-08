@@ -61,6 +61,7 @@
           <v-col>Target</v-col>
 
           <v-col>Elapsed</v-col>
+          <v-col>Action</v-col>
         </v-row>
         <v-row
           class="table-row"
@@ -110,6 +111,13 @@
                 : ''
             "
             >{{ position.elapsedTime }}</v-col
+          >
+          <v-col
+            ><a
+              style="color: white; font-weight: 600"
+              @click="manual(position.symbol)"
+              >Manual</a
+            ></v-col
           >
         </v-row>
 
@@ -313,6 +321,9 @@ export default {
     },
   },
   methods: {
+    manual(symbol) {
+      http.post(`future/manual?symbol=${symbol}`);
+    },
     connectGetPositionsSocket() {
       const getPositionsSocket = new WebSocket(
         `${process.env.VUE_APP_SOCKET_BASE_URL}/future-positions`

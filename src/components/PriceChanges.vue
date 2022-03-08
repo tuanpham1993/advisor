@@ -3,12 +3,19 @@
     <v-row class="table-header">
       <v-col>Symbol</v-col>
       <v-col>Change</v-col>
-      <v-col></v-col>
+      <v-col>Action</v-col>
     </v-row>
     <v-row class="table-row" v-for="item of priceChanges" :key="item.symbol">
       <v-col>{{ item.symbol }}</v-col>
-      <v-col>{{ item.priceChangePercent }}%</v-col>
-      <v-col><a style="color: white; font-weight: 600" @click="add(item.symbol)">LONG</a></v-col>
+      <v-col :class="+item.priceChangePercent > 0 ? 'text-green' : 'text-red'">{{ item.priceChangePercent }}%</v-col>
+      <v-col
+        ><a style="color: white; font-weight: 600" @click="long(item.symbol)"
+          >LONG</a
+        > | 
+        <a style="color: white; font-weight: 600" @click="short(item.symbol)"
+          >SHORT</a
+        ></v-col
+      >
     </v-row>
   </div>
 </template>
@@ -22,8 +29,11 @@ export default {
     priceChanges: { type: Array },
   },
   methods: {
-    add(symbol) {
+    long(symbol) {
       http.post(`future/long?symbol=${symbol}`);
+    },
+    short(symbol) {
+      http.post(`future/short?symbol=${symbol}`);
     },
   },
 };
