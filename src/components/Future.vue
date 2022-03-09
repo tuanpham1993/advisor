@@ -117,6 +117,13 @@
               style="color: white; font-weight: 600"
               @click="manual(position.symbol)"
               >Manual</a
+            >
+            |
+            <a
+              style="color: white; font-weight: 600"
+              target="_blank"
+              :href="`https://www.binance.com/en/futures/${position.symbol}`"
+              >BNC</a
             ></v-col
           >
         </v-row>
@@ -128,6 +135,7 @@
           <v-col>Price</v-col>
           <v-col>Budget</v-col>
           <v-col>Profit</v-col>
+          <v-col>Action</v-col>
           <v-col>Last Action</v-col>
         </v-row>
 
@@ -165,6 +173,15 @@
               )
             }}
           </v-col>
+
+          <v-col>
+            <a
+              style="color: white; font-weight: 600"
+              target="_blank"
+              :href="`https://www.binance.com/en/futures/${position.symbol}`"
+              >BNC</a
+            ></v-col
+          >
 
           <v-col>
             <span v-if="position.lastOrder">
