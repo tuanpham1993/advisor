@@ -135,6 +135,7 @@
           <v-col>Price</v-col>
           <v-col>Budget</v-col>
           <v-col>Profit</v-col>
+          <v-col>SL Price</v-col>
           <v-col>Action</v-col>
           <v-col>Last Action</v-col>
         </v-row>
@@ -156,23 +157,11 @@
           <v-col>{{
             round(+position.position.positionAmt * position.currentPrice, 2)
           }}</v-col>
-          <v-col
-            :class="
-              position.status === 0
-                ? 'text-orange'
-                : position.status === 2
-                ? 'text-green'
-                : 'text-red'
-            "
-          >
-            {{
-              round(
-                (position.currentPrice - position.avgPrice) *
-                  +position.position.positionAmt,
-                1
-              )
-            }}
+          <v-col :class="position.calcProfit > 0 ? 'text-green' : 'text-red'">
+            {{ position.calcProfit }} ({{ position.priceChange }}%)
           </v-col>
+
+          <v-col>{{position.slPrice}}</v-col>
 
           <v-col>
             <a
@@ -180,6 +169,10 @@
               target="_blank"
               :href="`https://www.binance.com/en/futures/${position.symbol}`"
               >BNC</a
+            >
+            | <input class="sl-input" type="number" v-model="sl[position.symbol]" /> 
+            <a style="color: white; font-weight: 600" @click="createSL(position.symbol)"
+              >SL</a
             ></v-col
           >
 
@@ -315,6 +308,8 @@ export default {
       tab: 0,
       orders: [],
 
+      sl: {},
+
       lastDayOpen: 0,
       lastDayClose: 0,
       lastDayOpenBudget: 0,
@@ -340,6 +335,14 @@ export default {
   methods: {
     manual(symbol) {
       http.post(`future/manual?symbol=${symbol}`);
+    },
+    createSL(symbol) {
+      console.log(symbol)
+      http.post(`future/sl`, {
+        symbol,
+        sl: +this.sl[symbol]
+      });
+      this.sl[symbol] = undefined
     },
     connectGetPositionsSocket() {
       const getPositionsSocket = new WebSocket(
@@ -670,5 +673,12 @@ export default {
     color: white;
     background-color: #2d2755 !important;
   }
+}
+
+.sl-input {
+  color: white;
+  border: solid 1px white;
+  border-radius: 2px;
+  width: 50px;
 }
 </style>
